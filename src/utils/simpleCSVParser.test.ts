@@ -1,4 +1,4 @@
-import simpleCsvParser, { ColumnType } from './simple-csv-parser'
+import simpleCsvParser, { ColumnType } from './simpleCSVParser'
 
 describe('Simple CSV Parser', () => {
   it('csv parse correctly (no columnSetting)', () => {
