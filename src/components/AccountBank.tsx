@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
+import moment from 'moment'
 
 import BillList from './Bill/List'
 import BillChart from './Bill/Chart'
-import BillFilter from './Bill/Filter'
+import BillFilter, { FilterChangeEvent } from './Bill/Filter'
 import BillCreate from './Bill/Create'
 
 import simpleCSVParser, { ColumnType } from '../utils/simpleCSVParser'
@@ -19,15 +20,15 @@ export type Bill = {
   time: Date
   type: number
   category: string
+  categoryText?: string
   amount: number
 }
 
 const AccountBank: React.FunctionComponent = (): JSX.Element => {
-  const [bills, setBills] = useState<Bill[]>([])
   const [categories, setCategories] = useState<Category[]>([])
-
-  // record org bills
-  let orgBills: Bill[] = []
+  const [bills, setBills] = useState<Bill[]>([])
+  // filtered bills
+  const [filteredBills, setFilteredBills] = useState<Bill[]>([])
 
   const fetchData = async () => {
     // user promise all to get two data async
@@ -41,6 +42,10 @@ const AccountBank: React.FunctionComponent = (): JSX.Element => {
       time: ColumnType.Timestamp,
       amount: ColumnType.Integer,
     }) as Bill[]
+    // order by time desc
+    bills.sort((bill1, bill2) =>
+      bill1.time.getTime() < bill2.time.getTime() ? 1 : -1
+    )
 
     const categories: Category[] = simpleCSVParser.parseCsv(rets[1], {
       type: ColumnType.Integer,
@@ -53,31 +58,51 @@ const AccountBank: React.FunctionComponent = (): JSX.Element => {
     // combine bills
     bills.forEach((bill) => {
       const category = categoryMap.get(bill.category) as Category
-      bill.category = category.name
+      bill.categoryText = category.name
+      // fix type
       bill.type = category.type
     })
 
     // set state
     setCategories(categories)
-    orgBills = bills
-    setBills(orgBills)
+    setBills(bills)
+    setFilteredBills(bills)
   }
 
+  // fetch data once
   useEffect(() => {
     fetchData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  const filterChange = (fileterChangeEvent: FilterChangeEvent) => {
+    const { month, category } = fileterChangeEvent
+    console.log(month, category)
+    const filterdBills = bills.filter((bill) => {
+      if (month && moment(bill.time).format('YYYY-MM') !== month) {
+        return false
+      }
+      if (category && bill.category !== category) {
+        return false
+      }
+      return true
+    })
+    setFilteredBills(filterdBills)
+  }
 
   return (
     <div className="account-bank">
       <h2 className="account-bank-title">A Simple Account Bank</h2>
       <div className="account-bank-body">
         <div className="account-bank-body-action">
-          <BillFilter categories={categories}></BillFilter>
+          <BillFilter
+            onChange={filterChange}
+            categories={categories}
+          ></BillFilter>
           <BillCreate categories={categories}></BillCreate>
         </div>
         <div className="account-bank-body-content">
-          <BillList bills={bills}></BillList>
+          <BillList bills={filteredBills}></BillList>
           <BillChart></BillChart>
         </div>
       </div>

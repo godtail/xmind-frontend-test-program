@@ -1,5 +1,5 @@
-import { Table } from 'antd'
 import React from 'react'
+import { Table, Tag } from 'antd'
 import moment from 'moment'
 
 import { Bill } from '../AccountBank'
@@ -16,17 +16,20 @@ const BillList: React.FunctionComponent<Props> = (props): JSX.Element => {
     {
       title: 'Time',
       dataIndex: 'time',
-      render: (time: Date) => {
-        return <div>{moment(time).format('YYYY-MM-DD')}</div>
-      },
+      render: (time: Date) => <div>{moment(time).format('YYYY-MM-DD')}</div>,
     },
     {
       title: 'Type',
       dataIndex: 'type',
+      render: (type: number) => (
+        <Tag color={type === 1 ? 'green' : 'orange'}>
+          {type === 1 ? 'Income' : 'Expenditure'}
+        </Tag>
+      ),
     },
     {
       title: 'Category',
-      dataIndex: 'category',
+      dataIndex: 'categoryText',
     },
     {
       title: 'Amount',
@@ -38,7 +41,9 @@ const BillList: React.FunctionComponent<Props> = (props): JSX.Element => {
     <div className="account-bank-list">
       <Table
         // use a special key, in real scene source always has a id
-        rowKey={(row) => row.time.toString() + row.category + row.amount}
+        rowKey={(row) =>
+          row.time.toString() + row.type + row.category + row.amount
+        }
         bordered
         columns={columns}
         dataSource={bills}
