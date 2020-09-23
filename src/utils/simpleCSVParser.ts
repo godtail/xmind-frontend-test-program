@@ -50,8 +50,7 @@ class SimpleCsvParse {
                 formatColumn = new Date(column)
                 break
               case ColumnType.Timestamp:
-                // timestamp need change s to ms
-                formatColumn = new Date(parseInt(column, 10) * 1000)
+                formatColumn = new Date(parseInt(column, 10))
                 break
             }
             rowData[columnKey] = formatColumn

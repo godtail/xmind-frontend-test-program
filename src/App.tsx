@@ -1,7 +1,8 @@
 import React from 'react'
+import AccountBank from './components/AccountBank'
 
-function App() {
-  return <div className="App"></div>
+const App: React.FunctionComponent = (): JSX.Element => {
+  return <AccountBank />
 }
 
 export default App
