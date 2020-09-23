@@ -23,8 +23,8 @@ describe('Simple CSV Parser', () => {
   it('csv parse correctly (with columnSetting)', () => {
     const csv = `
     name,age,birthday,money,update
-    liming,20,2020-07-07,534.45,1598009388
-    lili,18,2012-06-12,423.54,1597894280
+    liming,20,2020-07-07,534.45,1598009388000
+    lili,18,2012-06-12,423.54,1597894280000
     `
     const columnSetting = {
       name: ColumnType.String,
