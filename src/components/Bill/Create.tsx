@@ -5,7 +5,6 @@ import { Category } from '../AccountBank'
 import '../AccountBank.scss'
 import { FormInstance } from 'antd/lib/form'
 import { RadioChangeEvent } from 'antd/lib/radio'
-
 const { Option } = Select
 
 export type BillCreateEvent = {
@@ -30,6 +29,14 @@ const BillCreate: React.FunctionComponent<Props> = (props): JSX.Element => {
   const formLayout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 18 },
+  }
+
+  const typeChange = (event: RadioChangeEvent) => {
+    setType(event.target.value as number)
+    // reset category select
+    formRef.current?.setFieldsValue({
+      category: null,
+    })
   }
 
   const createNewBill = async () => {
@@ -60,11 +67,7 @@ const BillCreate: React.FunctionComponent<Props> = (props): JSX.Element => {
             name="type"
             label="Type"
           >
-            <Radio.Group
-              onChange={(event: RadioChangeEvent) =>
-                setType(event.target.value as number)
-              }
-            >
+            <Radio.Group onChange={typeChange}>
               <Radio value={0}>Expenditure</Radio>
               <Radio value={1}>Income</Radio>
             </Radio.Group>
