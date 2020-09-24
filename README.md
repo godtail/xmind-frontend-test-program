@@ -4,7 +4,7 @@
 
 Here is how I completed the test program.
 
-![](https://godtail.tech.top/20200924205518.png!share)
+![](.github/xmind.png)
 
 ## Demand Analysis
 
@@ -61,10 +61,10 @@ For the good experience and elegant programming.
 
 ### UI/UX Design (basic)
 
-![](https://godtail.tech.top/20200924211552.png!share)
+![](.github/ui.png)
 
 ## Screen Shoots
 
-![](https://godtail.tech.top/20200924211727.png!share)
+![](.github/screen-1.png)
 
-![](https://godtail.tech.top/20200924211743.png!share)
+![](.github/screen-2.png)
