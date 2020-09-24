@@ -1,16 +1,32 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Table, Tag } from 'antd'
 import moment from 'moment'
 
-import { Bill } from '../AccountBank'
+import { Bill, Category } from '../AccountBank'
 import '../AccountBank.scss'
 
 type Props = {
   bills: Bill[]
+  categories: Category[]
 }
 
 const BillList: React.FunctionComponent<Props> = (props): JSX.Element => {
-  const { bills } = props
+  const { bills, categories } = props
+  // use category mapping to get data quickly
+  const [categoriesMapping, setCategoriesMapping] = useState<
+    Map<string, Category>
+  >(new Map())
+
+  const updateCategoriesMapping = () => {
+    const categoriesMap: Map<string, Category> = new Map<string, Category>()
+    categories.forEach((category) => categoriesMap.set(category.id, category))
+    setCategoriesMapping(categoriesMap)
+  }
+
+  useEffect(() => {
+    updateCategoriesMapping()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [categories])
 
   const columns = [
     {
@@ -29,7 +45,8 @@ const BillList: React.FunctionComponent<Props> = (props): JSX.Element => {
     },
     {
       title: 'Category',
-      dataIndex: 'categoryText',
+      dataIndex: 'category',
+      render: (category: string) => categoriesMapping.get(category)?.name,
     },
     {
       title: 'Amount',
