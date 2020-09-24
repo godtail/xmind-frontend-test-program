@@ -55,7 +55,7 @@ const BillList: React.FunctionComponent<Props> = (props): JSX.Element => {
   ]
 
   return (
-    <div className="account-bank-list">
+    <div className="account-bank-list-content">
       <Table
         // use a special key, in real scene source always has a id
         rowKey={(row) =>

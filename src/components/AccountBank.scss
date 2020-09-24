@@ -6,15 +6,30 @@
   }
 
   &-body {
-    padding: 40px;
+    padding: 20px 40px 0;
+    display: flex;
   }
 
-  &-body-action {
+  &-list {
+    flex-grow: 1;
+  }
+
+  &-chart {
+    margin-left: 10px;
+    width: 330px;
+
+    canvas {
+      width: 280px;
+      height: 280px;
+    }
+  }
+
+  &-list-action {
     display: flex;
     justify-content: space-between;
   }
 
-  &-body-content {
+  &-list-content {
     margin-top: 20px;
   }
 }

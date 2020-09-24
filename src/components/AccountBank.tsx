@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import moment from 'moment'
+import { Card } from 'antd'
 
 import BillList from './Bill/List'
 import BillChart from './Bill/Chart'
@@ -23,6 +24,7 @@ export type Bill = {
   amount: number
 }
 
+// simple implement, next version use Redux
 const AccountBank: React.FunctionComponent = (): JSX.Element => {
   const [bills, setBills] = useState<Bill[]>([])
   const [categories, setCategories] = useState<Category[]>([])
@@ -93,21 +95,23 @@ const AccountBank: React.FunctionComponent = (): JSX.Element => {
 
   return (
     <div className="account-bank">
-      <h2 className="account-bank-title">A Simple Account Bank</h2>
+      <h1 className="account-bank-title">A Simple Account Bank</h1>
       <div className="account-bank-body">
-        <div className="account-bank-body-action">
-          <BillFilter
-            onChange={(fileterChangeEvent) => setFilter(fileterChangeEvent)}
-            categories={categories}
-          ></BillFilter>
-          <BillCreate
-            onCreate={createNewBill}
-            categories={categories}
-          ></BillCreate>
-        </div>
-        <div className="account-bank-body-content">
+        <Card className="account-bank-list">
+          <div className="account-bank-list-action">
+            <BillFilter
+              onChange={(fileterChangeEvent) => setFilter(fileterChangeEvent)}
+              categories={categories}
+            ></BillFilter>
+            <BillCreate
+              onCreate={createNewBill}
+              categories={categories}
+            ></BillCreate>
+          </div>
           <BillList categories={categories} bills={resultBills()}></BillList>
-          <BillChart></BillChart>
+        </Card>
+        <div className="account-bank-chart">
+          <BillChart categories={categories} bills={resultBills()}></BillChart>
         </div>
       </div>
     </div>
